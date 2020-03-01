@@ -39,6 +39,9 @@ module.exports = ({ mode }) => {
     optimization: {},
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.json', '.wasm', '.mjs'],
+      alias: {
+        '@': paths.appSrc,
+      },
     },
     module: {
       strictExportPresence: true,
