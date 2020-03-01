@@ -47,6 +47,23 @@ module.exports = ({ mode }) => {
           parser: { requireEnsure: false },
         },
         {
+          test: /\.(js|jsx|ts|tsx|mjs)$/,
+          include: paths.appSrc,
+          enforce: 'pre',
+          loader: require.resolve('eslint-loader'),
+          options: {
+            cache: true,
+            eslintPath: require.resolve('eslint'),
+            resolvePluginsRelativeTo: __dirname,
+            formatter: require.resolve('react-dev-utils/eslintFormatter'),
+            baseConfig: {
+              extends: require.resolve('./eslint.config.js'),
+              parser: require.resolve('babel-eslint'),
+            },
+            useEslintrc: false,
+          },
+        },
+        {
           oneOf: [
             {
               test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
