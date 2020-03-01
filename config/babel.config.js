@@ -4,14 +4,14 @@
 module.exports = ({ antd }) => {
   return {
     presets: [
-      '@babel/preset-env',
-      '@babel/preset-react',
+      require.resolve('@babel/preset-env'),
+      require.resolve('@babel/preset-react'),
     ],
     plugins: [
-      '@babel/plugin-proposal-class-properties',
-      ['@babel/plugin-proposal-decorators', { decoratorsBeforeExport: true }],
+      require.resolve('@babel/plugin-proposal-class-properties'),
+      [require.resolve('@babel/plugin-proposal-decorators'), { decoratorsBeforeExport: true }],
       antd && [
-        'import',
+        require.resolve('babel-plugin-import'),
         { libraryName: 'antd', libraryDirectory: 'es', style: true },
       ],
     ].filter(Boolean),

@@ -50,7 +50,7 @@ module.exports = ({ mode }) => {
           oneOf: [
             {
               test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
-              loader: 'url-loader',
+              loader: require.resolve('url-loader'),
               options: {
                 limit: 10000,
                 name: 'static/media/[name].[hash:8].[ext]',
@@ -59,7 +59,7 @@ module.exports = ({ mode }) => {
             {
               test: /\.(js|jsx|ts|tsx|mjs)$/,
               include: paths.appSrc,
-              loader: 'babel-loader',
+              loader: require.resolve('babel-loader'),
               options: {
                 cacheDirectory: true,
                 cacheCompression: false,
@@ -77,14 +77,14 @@ module.exports = ({ mode }) => {
                   loader: isProd ? MiniCssExtractPlugin.loader : 'style-loader',
                 },
                 {
-                  loader: 'css-loader',
+                  loader: require.resolve('css-loader'),
                   options: {
                     importLoaders: 1,
                     sourceMap: generateSourceMap,
                   },
                 },
                 {
-                  loader: 'postcss-loader',
+                  loader: require.resolve('postcss-loader'),
                   options: {
                     sourceMap: generateSourceMap,
                   },
@@ -100,14 +100,14 @@ module.exports = ({ mode }) => {
                   loader: isProd ? MiniCssExtractPlugin.loader : 'style-loader',
                 },
                 {
-                  loader: 'css-loader',
+                  loader: require.resolve('css-loader'),
                   options: {
                     importLoaders: 1,
                     sourceMap: generateSourceMap,
                   },
                 },
                 {
-                  loader: 'less-loader',
+                  loader: require.resolve('less-loader'),
                   options: {
                     modifyVars:
                       config.antd === true
@@ -120,7 +120,7 @@ module.exports = ({ mode }) => {
               ],
             },
             {
-              loader: 'file-loader',
+              loader: require.resolve('file-loader'),
               exclude: [/\.(js|jsx|ts|tsx|mjs)$/, /\.html$/, /\.json$/],
               options: {
                 name: 'static/media/[name].[hash:8].[ext]',
