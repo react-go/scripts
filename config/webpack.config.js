@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
 
 const config = require('./react-go.config');
 const paths = require('./paths');
@@ -9,10 +10,46 @@ const babelConfigFactory = require('./babel.config');
 
 const useAntd = Boolean(config.antd);
 
+const cssRegex = /\.css$/;
+const cssModuleRegex = /\.module\.css$/;
+
 module.exports = ({ mode }) => {
   const isDev = mode === 'development';
   const isProd = mode === 'production';
   const generateSourceMap = !isProd;
+
+  const getStyleLoaders = (cssOptions, preProcessor) => {
+    const loaders = [
+      isProd ? MiniCssExtractPlugin.loader : require.resolve('style-loader'),
+      {
+        loader: require.resolve('css-loader'),
+        options: {
+          sourceMap: generateSourceMap,
+          ...cssOptions,
+        },
+      },
+      {
+        loader: require.resolve('postcss-loader'),
+        options: {
+          sourceMap: generateSourceMap,
+          ident: 'postcss',
+          plugins: () => [
+            require('postcss-flexbugs-fixes'),
+            require('postcss-preset-env')({
+              stage: 3,
+              autoprefixer: {
+                flexbox: 'no-2009',
+              },
+            }),
+          ],
+        },
+      },
+    ];
+    if (preProcessor) {
+      loaders.push(preProcessor);
+    }
+    return loaders;
+  };
 
   return {
     mode,
@@ -91,26 +128,19 @@ module.exports = ({ mode }) => {
               },
             },
             {
-              test: /\.css$/,
-              use: [
-                {
-                  loader: isProd ? MiniCssExtractPlugin.loader : 'style-loader',
-                },
-                {
-                  loader: require.resolve('css-loader'),
-                  options: {
-                    importLoaders: 1,
-                    sourceMap: generateSourceMap,
-                  },
-                },
-                {
-                  loader: require.resolve('postcss-loader'),
-                  options: {
-                    sourceMap: generateSourceMap,
-                  },
-                },
-              ],
+              test: cssRegex,
+              exclude: cssModuleRegex,
+              use: getStyleLoaders({ importLoaders: 1 }),
               sideEffects: true,
+            },
+            {
+              test: cssModuleRegex,
+              use: getStyleLoaders({
+                importLoaders: 1,
+                modules: {
+                  getLocalIdent: getCSSModuleLocalIdent,
+                },
+              }),
             },
             useAntd && {
               test: /\.less$/,
