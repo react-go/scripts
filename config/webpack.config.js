@@ -12,6 +12,8 @@ const useAntd = Boolean(config.antd);
 
 const cssRegex = /\.css$/;
 const cssModuleRegex = /\.module\.css$/;
+const sassRegex = /\.(scss|sass)$/;
+const sassModuleRegex = /\.module\.(scss|sass)$/;
 
 module.exports = ({ mode }) => {
   const isDev = mode === 'development';
@@ -141,6 +143,37 @@ module.exports = ({ mode }) => {
                   getLocalIdent: getCSSModuleLocalIdent,
                 },
               }),
+            },
+            {
+              test: sassRegex,
+              exclude: sassModuleRegex,
+              use: getStyleLoaders(
+                { importLoaders: 2 },
+                {
+                  loader: require.resolve('sass-loader'),
+                  options: {
+                    implementation: require('sass'),
+                  },
+                },
+              ),
+              sideEffects: true,
+            },
+            {
+              test: sassModuleRegex,
+              use: getStyleLoaders(
+                {
+                  importLoaders: 2,
+                  modules: {
+                    getLocalIdent: getCSSModuleLocalIdent,
+                  },
+                },
+                {
+                  loader: require.resolve('sass-loader'),
+                  options: {
+                    implementation: require('sass'),
+                  },
+                },
+              ),
             },
             useAntd && {
               test: /\.less$/,
