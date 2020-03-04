@@ -2,6 +2,9 @@ const path = require('path');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const safePostCssParser = require('postcss-safe-parser');
 const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
 
 const config = require('./react-go.config');
@@ -75,7 +78,52 @@ module.exports = ({ mode }) => {
       globalObject: 'this',
     },
     stats: 'none',
-    optimization: {},
+    optimization: {
+      minimize: isProd,
+      minimizer: [
+        new TerserPlugin({
+          terserOptions: {
+            parser: {
+              ecma: 8,
+            },
+            compress: {
+              ecma: 5,
+              warnings: false,
+              comparisons: false,
+              inline: 2,
+            },
+            mangle: {
+              safari10: true,
+            },
+            output: {
+              ecma: 5,
+              comments: 'some',
+              ascii_only: true,
+            },
+          },
+          extractComments: false,
+          sourceMap: generateSourceMap,
+        }),
+        new OptimizeCSSAssetsPlugin({
+          cssProcessorOptions: {
+            parser: safePostCssParser,
+            map: generateSourceMap
+              ? { inline: false, annotation: true }
+              : false,
+          },
+          cssProcessorPluginOptions: {
+            preset: ['default', { minifyFontValues: { removeQuotes: true } }],
+          },
+        }),
+      ],
+      splitChunks: {
+        chunks: 'all',
+        name: false,
+      },
+      runtimeChunk: {
+        name: entrypoint => `runtime-${entrypoint.name}`,
+      },
+    },
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.json', '.wasm', '.mjs'],
       alias: {
