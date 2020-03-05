@@ -1,3 +1,6 @@
+process.env.NODE_ENV = 'development';
+process.env.BABEL_ENV = 'development';
+
 const url = require('url');
 const chalk = require('chalk');
 const address = require('address');
@@ -15,9 +18,6 @@ const isInteractive = process.stdout.isTTY;
 const isPrivateIP = (ip) => /^10[.]|^172[.](1[6-9]|2[0-9]|3[0-1])[.]|^192[.]168[.]/.test(ip);
 
 module.exports = () => {
-  process.env.NODE_ENV = 'development';
-  process.env.BABEL_ENV = 'development';
-
   const appName = require(paths.appPackageJson).name;
   const localUrl = url.format({
     protocol: 'http',

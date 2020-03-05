@@ -6,8 +6,6 @@ process.on('unhandledRejection', (error) => {
 
 const commander = require('commander');
 const pkg = require('../package.json');
-const start = require('../scripts/start');
-const build = require('../scripts/build');
 
 const program = new commander.Command();
 
@@ -16,10 +14,10 @@ program.version(pkg.version);
 program
   .command('start')
   .description('run dev server')
-  .action(start);
+  .action(() => require('../scripts/start')());
 program
   .command('build')
   .description('build static files')
-  .action(build);
+  .action(() => require('../scripts/build')());
 
 program.parse(process.argv);

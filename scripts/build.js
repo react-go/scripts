@@ -1,10 +1,10 @@
+process.env.NODE_ENV = 'production';
+process.env.BABEL_ENV = 'production';
+
 const webpack = require('webpack');
 const webpackConfigFactory = require('../config/webpack.config');
 
 module.exports = () => {
-  process.env.NODE_ENV = 'production';
-  process.env.BABEL_ENV = 'production';
-
   let compiler;
   try {
     compiler = webpack(webpackConfigFactory({ mode: 'production' }));
