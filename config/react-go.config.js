@@ -17,6 +17,7 @@ const DEFAULT_CONFIG = {
   dist: './dist',
   publicPath: '/',
   antd: false, // string | false | true
+  proxy: {},
 };
 
 module.exports = _.merge(DEFAULT_CONFIG, _.omit(USER_CONFIG, ['root', 'isTS']));

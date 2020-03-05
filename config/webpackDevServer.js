@@ -18,6 +18,7 @@ module.exports = {
   watchOptions: {
     ignored: ignoredFiles(paths.appSrc),
   },
+  proxy: config.proxy,
   before(app, server) {
     app.use(evalSourceMapMiddleware(server));
     app.use(errorOverlayMiddleware());
