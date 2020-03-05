@@ -12,4 +12,5 @@ module.exports = {
   appPublic: resolveApp('./public'),
   appNodeModules: resolveApp('./node_modules'),
   appDist: resolveApp(config.dist),
+  dotEnv: resolveApp('.env'),
 };

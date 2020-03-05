@@ -7,6 +7,7 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const safePostCssParser = require('postcss-safe-parser');
 const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
 
+const getClientEnvironment = require('./env');
 const config = require('./react-go.config');
 const paths = require('./paths');
 const babelConfigFactory = require('./babel.config');
@@ -22,6 +23,8 @@ module.exports = ({ mode }) => {
   const isDev = mode === 'development';
   const isProd = mode === 'production';
   const generateSourceMap = !isProd;
+
+  const env = getClientEnvironment();
 
   const getStyleLoaders = (cssOptions, preProcessor) => {
     const loaders = [
@@ -263,7 +266,7 @@ module.exports = ({ mode }) => {
     },
     plugins: [
       new HtmlWebpackPlugin({ inject: true, template: paths.appIndexHtml }),
-      new webpack.DefinePlugin({}),
+      new webpack.DefinePlugin(env.stringified),
       !isProd && new webpack.HotModuleReplacementPlugin(),
       isProd &&
         new MiniCssExtractPlugin({
