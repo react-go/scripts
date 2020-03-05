@@ -15,9 +15,7 @@ const babelConfigFactory = require('./babel.config');
 const useAntd = Boolean(config.antd);
 
 const cssRegex = /\.css$/;
-const cssModuleRegex = /\.module\.css$/;
 const sassRegex = /\.(scss|sass)$/;
-const sassModuleRegex = /\.module\.(scss|sass)$/;
 
 module.exports = ({ mode }) => {
   const isDev = mode === 'development';
@@ -182,12 +180,7 @@ module.exports = ({ mode }) => {
             },
             {
               test: cssRegex,
-              exclude: cssModuleRegex,
-              use: getStyleLoaders({ importLoaders: 1 }),
-              sideEffects: true,
-            },
-            {
-              test: cssModuleRegex,
+              resourceQuery: /css_modules/,
               use: getStyleLoaders({
                 importLoaders: 1,
                 modules: {
@@ -196,21 +189,13 @@ module.exports = ({ mode }) => {
               }),
             },
             {
-              test: sassRegex,
-              exclude: sassModuleRegex,
-              use: getStyleLoaders(
-                { importLoaders: 2 },
-                {
-                  loader: require.resolve('sass-loader'),
-                  options: {
-                    implementation: require('sass'),
-                  },
-                },
-              ),
+              test: cssRegex,
+              use: getStyleLoaders({ importLoaders: 1 }),
               sideEffects: true,
             },
             {
-              test: sassModuleRegex,
+              test: sassRegex,
+              resourceQuery: /css_modules/,
               use: getStyleLoaders(
                 {
                   importLoaders: 2,
@@ -225,6 +210,19 @@ module.exports = ({ mode }) => {
                   },
                 },
               ),
+            },
+            {
+              test: sassRegex,
+              use: getStyleLoaders(
+                { importLoaders: 2 },
+                {
+                  loader: require.resolve('sass-loader'),
+                  options: {
+                    implementation: require('sass'),
+                  },
+                },
+              ),
+              sideEffects: true,
             },
             useAntd && {
               test: /\.less$/,
