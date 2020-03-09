@@ -8,6 +8,10 @@ const paths = require('../config/paths');
 
 module.exports = () => {
   fs.emptyDirSync(paths.appDist);
+  fs.copy(paths.appPublic, paths.appDist, {
+    dereference: true,
+    filter: file => file !== paths.appIndexHtml,
+  });
 
   let compiler;
   try {
