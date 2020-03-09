@@ -7,6 +7,7 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const safePostCssParser = require('postcss-safe-parser');
 const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
 
+const BetterProgressWebpackPlugin = require('../utils/betterProgress');
 const getClientEnvironment = require('./env');
 const config = require('./react-go.config');
 const paths = require('./paths');
@@ -272,6 +273,7 @@ module.exports = ({ mode }) => {
           chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
         }),
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+      new BetterProgressWebpackPlugin(),
     ].filter(Boolean),
   };
 };
