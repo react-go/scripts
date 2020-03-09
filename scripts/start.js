@@ -8,6 +8,7 @@ const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const clearConsole = require('react-dev-utils/clearConsole');
 const openBrowser = require('react-dev-utils/openBrowser');
+const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages');
 const config = require('../config/react-go.config');
 const paths = require('../config/paths');
 const webpackConfigFactory = require('../config/webpack.config');
@@ -52,13 +53,22 @@ module.exports = () => {
     if (isInteractive) {
       clearConsole();
     }
-    const statsData = stats.toString({
+    const statsData = stats.toJson({
       all: false,
       errors: true,
       warnings: true,
-      assets: true,
-      colors: true,
     });
+    const messages = formatWebpackMessages(statsData);
+    if (messages.errors.length > 0) {
+      console.log(chalk.red('Failed to compile.\n'));
+      console.log(messages.errors.join('\n\n'));
+      return;
+    }
+    if (messages.warnings.length > 0) {
+      console.log(chalk.yellow('Compiled with warnings.\n'));
+      console.log(messages.warnings.join('\n\n'));
+      return;
+    }
     console.log(chalk.green('Compiled successfully!'));
     console.log();
     console.log(`You can now view ${chalk.bold(appName)} in the browser.`);
@@ -66,7 +76,6 @@ module.exports = () => {
     console.log(`- ${chalk.bold('Local:')}   ${localUrl}`);
     lanUrl && console.log(`- ${chalk.bold('Lan:')}     ${lanUrl}`);
     console.log();
-    console.log(statsData);
   });
 
   const server = new WebpackDevServer(compiler, devServerConfig);
