@@ -18,6 +18,9 @@ module.exports = {
   watchOptions: {
     ignored: ignoredFiles(paths.appSrc),
   },
+  historyApiFallback: {
+    disableDotRule: true,
+  },
   proxy: config.proxy,
   before(app, server) {
     app.use(evalSourceMapMiddleware(server));
