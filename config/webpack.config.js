@@ -8,7 +8,7 @@ const safePostCssParser = require('postcss-safe-parser');
 const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
 
 const BetterProgressWebpackPlugin = require('../utils/betterProgress');
-const getClientEnvironment = require('./env');
+const { getClientEnvironment, stringify } = require('./env');
 const config = require('./react-go.config');
 const paths = require('./paths');
 const babelConfigFactory = require('./babel.config');
@@ -18,12 +18,13 @@ const useAntd = Boolean(config.antd);
 const cssRegex = /\.css$/;
 const sassRegex = /\.(scss|sass)$/;
 
-module.exports = ({ mode }) => {
+module.exports = ({ mode, appEnv }) => {
   const isDev = mode === 'development';
   const isProd = mode === 'production';
   const generateSourceMap = !isProd;
 
   const env = getClientEnvironment();
+  const stringifiedEnv = stringify({ ...env, APP_ENV: appEnv });
 
   const getStyleLoaders = (cssOptions, preProcessor) => {
     const loaders = [
@@ -265,7 +266,7 @@ module.exports = ({ mode }) => {
     },
     plugins: [
       new HtmlWebpackPlugin({ inject: true, template: paths.appIndexHtml }),
-      new webpack.DefinePlugin(env.stringified),
+      new webpack.DefinePlugin(stringifiedEnv),
       !isProd && new webpack.HotModuleReplacementPlugin(),
       isProd &&
         new MiniCssExtractPlugin({

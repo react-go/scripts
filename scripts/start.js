@@ -18,7 +18,7 @@ const isInteractive = process.stdout.isTTY;
 
 const isPrivateIP = (ip) => /^10[.]|^172[.](1[6-9]|2[0-9]|3[0-1])[.]|^192[.]168[.]/.test(ip);
 
-module.exports = () => {
+module.exports = (opts) => {
   const appName = require(paths.appPackageJson).name;
   const localUrl = url.format({
     protocol: 'http',
@@ -37,7 +37,7 @@ module.exports = () => {
 
   let compiler;
   try {
-    compiler = webpack(webpackConfigFactory({ mode: 'development' }));
+    compiler = webpack(webpackConfigFactory({ mode: 'development', appEnv: opts.appEnv }));
   } catch (error) {
     console.log(error);
     process.exit(1);

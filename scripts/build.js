@@ -6,7 +6,7 @@ const webpack = require('webpack');
 const webpackConfigFactory = require('../config/webpack.config');
 const paths = require('../config/paths');
 
-module.exports = () => {
+module.exports = (opts) => {
   fs.emptyDirSync(paths.appDist);
   fs.copy(paths.appPublic, paths.appDist, {
     dereference: true,
@@ -15,7 +15,7 @@ module.exports = () => {
 
   let compiler;
   try {
-    compiler = webpack(webpackConfigFactory({ mode: 'production' }));
+    compiler = webpack(webpackConfigFactory({ mode: 'production', appEnv: opts.appEnv }));
   } catch (error) {
     console.log(error);
     process.exit(1);
