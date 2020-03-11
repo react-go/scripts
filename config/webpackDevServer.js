@@ -18,8 +18,10 @@ module.exports = {
   watchOptions: {
     ignored: ignoredFiles(paths.appSrc),
   },
+  disableHostCheck: typeof config.open === 'string',
   historyApiFallback: {
     disableDotRule: true,
+    index: config.publicPath,
   },
   proxy: config.proxy,
   before(app, server) {
@@ -27,6 +29,6 @@ module.exports = {
     app.use(errorOverlayMiddleware());
   },
   after(app) {
-    app.use(redirectServedPath('/'));
+    app.use(redirectServedPath(config.publicPath));
   },
 };

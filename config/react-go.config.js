@@ -17,10 +17,11 @@ if (!_.isPlainObject(USER_CONFIG)) {
 
 const DEFAULT_CONFIG = {
   root: appDirectory,
+  open: true, // string | boolean
   port: 8000,
   dist: './dist',
   publicPath: '/',
-  antd: false, // string | false | true
+  antd: false, // string | boolean
   proxy: {},
 };
 

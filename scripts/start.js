@@ -20,18 +20,27 @@ const isPrivateIP = (ip) => /^10[.]|^172[.](1[6-9]|2[0-9]|3[0-1])[.]|^192[.]168[
 
 module.exports = (opts) => {
   const appName = require(paths.appPackageJson).name;
+
+  const isOpen = Boolean(config.open);
+  const openHost = !isOpen
+    ? false
+    : (config.open === true ? 'localhost' : config.open);
+  const isLocal = ['localhost', '127.0.0.1', '0.0.0.0'].includes(openHost);
+
   const localUrl = url.format({
     protocol: 'http',
-    hostname: 'localhost',
+    hostname: openHost,
     port: config.port,
+    pathname: config.publicPath,
   });
   const lanIP = address.ip();
   let lanUrl;
-  if (isPrivateIP(lanIP)) {
+  if (isLocal && isPrivateIP(lanIP)) {
     lanUrl = url.format({
       protocol: 'http',
       hostname: lanIP,
       port: config.port,
+      pathname: config.publicPath,
     });
   }
 
@@ -87,7 +96,7 @@ module.exports = (opts) => {
     if (isInteractive) {
       clearConsole();
       console.log(chalk.cyan('Starting the development server...\n'));
-      openBrowser(localUrl);
+      Boolean(openHost) && openBrowser(localUrl);
     }
 
     ['SIGINT', 'SIGTERM'].forEach(function(sig) {

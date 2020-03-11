@@ -77,7 +77,7 @@ module.exports = ({ mode, appEnv }) => {
         ? 'static/js/[name].[contenthash:8].js'
         : 'static/js/[name].chunk.js',
       futureEmitAssets: true,
-      publicPath: config.publicPath,
+      publicPath: config.publicPath.endsWith('/') ? config.publicPath : `${config.publicPath}/`,
       globalObject: 'this',
     },
     stats: 'none',
