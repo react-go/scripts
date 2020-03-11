@@ -175,7 +175,7 @@ module.exports = ({ mode, appEnv }) => {
                 cacheCompression: false,
                 configFile: false,
                 babelrc: false,
-                ...babelConfigFactory({ antd: useAntd }),
+                ...babelConfigFactory({ antd: config.antd }),
                 sourceMaps: generateSourceMap,
                 inputSourceMap: generateSourceMap,
               },
@@ -244,9 +244,9 @@ module.exports = ({ mode, appEnv }) => {
                   loader: require.resolve('less-loader'),
                   options: {
                     modifyVars:
-                      config.antd === true
-                        ? {}
-                        : require(path.resolve(paths.appRoot, config.antd)),
+                      config.antd && config.antd.theme
+                        ? config.antd.theme
+                        : {},
                     javascriptEnabled: true,
                     sourceMap: generateSourceMap,
                   },

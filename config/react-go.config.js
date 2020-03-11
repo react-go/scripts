@@ -21,7 +21,7 @@ const DEFAULT_CONFIG = {
   port: 8000,
   dist: './dist',
   publicPath: '/',
-  antd: false, // string | boolean
+  antd: false, // boolean | object eg. { mobile: boolean, theme: {} }
   proxy: {},
 };
 
