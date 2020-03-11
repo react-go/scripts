@@ -4,6 +4,7 @@
 const restrictedGlobals = require('confusing-browser-globals');
 
 module.exports = {
+  parser: require.resolve('babel-eslint'),
   plugins: ['import', 'react', 'react-hooks', 'jsx-a11y'],
   env: {
     browser: true,
