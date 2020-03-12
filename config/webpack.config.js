@@ -185,6 +185,7 @@ module.exports = ({ mode, appEnv }) => {
               resourceQuery: /css_modules/,
               use: getStyleLoaders({
                 importLoaders: 1,
+                localsConvention: 'camelCase',
                 modules: {
                   getLocalIdent: getCSSModuleLocalIdent,
                 },
@@ -201,6 +202,7 @@ module.exports = ({ mode, appEnv }) => {
               use: getStyleLoaders(
                 {
                   importLoaders: 2,
+                  localsConvention: 'camelCase',
                   modules: {
                     getLocalIdent: getCSSModuleLocalIdent,
                   },
