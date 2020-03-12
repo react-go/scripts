@@ -5,15 +5,21 @@ const redirectServedPath = require('react-dev-utils/redirectServedPathMiddleware
 const config = require('./react-go.config');
 const paths = require('./paths');
 
+const publicPath = config.publicPath !== '/' && config.publicPath.endsWith('/')
+  ? config.publicPath.slice(0, -1)
+  : config.publicPath;
+
 module.exports = {
-  publicPath: config.publicPath,
+  publicPath,
   contentBase: paths.appPublic,
+  contentBasePublicPath: publicPath,
   watchContentBase: true,
   hot: true,
   compress: true,
   clientLogLevel: 'none',
   quiet: true,
   transportMode: 'ws',
+  injectClient: false,
   overlay: false,
   watchOptions: {
     ignored: ignoredFiles(paths.appSrc),

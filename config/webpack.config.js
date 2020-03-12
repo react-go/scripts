@@ -64,7 +64,7 @@ module.exports = ({ mode, appEnv }) => {
     bail: isProd,
     devtool: generateSourceMap ? 'cheap-module-source-map' : false,
     entry: [
-      !isProd && require.resolve('react-dev-utils/webpackHotDevClient'),
+      !isDev && require.resolve('react-dev-utils/webpackHotDevClient'),
       paths.appIndex,
     ].filter(Boolean),
     output: {
