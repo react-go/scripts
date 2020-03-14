@@ -19,16 +19,15 @@ const cssRegex = /\.css$/;
 const sassRegex = /\.(scss|sass)$/;
 
 module.exports = ({ mode, appEnv }) => {
-  const isDev = mode === 'development';
-  const isProd = mode === 'production';
-  const generateSourceMap = !isProd;
+  const isDevMode = mode === 'development';
+  const generateSourceMap = isDevMode;
 
   const env = getClientEnvironment();
   const stringifiedEnv = stringify({ ...env, APP_ENV: appEnv });
 
   const getStyleLoaders = (cssOptions, preProcessor) => {
     const loaders = [
-      isProd ? MiniCssExtractPlugin.loader : require.resolve('style-loader'),
+      isDevMode ? require.resolve('style-loader') : MiniCssExtractPlugin.loader,
       {
         loader: require.resolve('css-loader'),
         options: {
@@ -61,28 +60,28 @@ module.exports = ({ mode, appEnv }) => {
 
   return {
     mode,
-    bail: isProd,
+    bail: !isDevMode,
     devtool: generateSourceMap ? 'cheap-module-source-map' : false,
     entry: [
-      isDev && require.resolve('react-dev-utils/webpackHotDevClient'),
+      isDevMode && require.resolve('react-dev-utils/webpackHotDevClient'),
       paths.appIndex,
     ].filter(Boolean),
     output: {
-      path: isProd ? paths.appDist : undefined,
-      pathinfo: !isProd,
-      filename: isProd
-        ? 'static/js/[name].[contenthash:8].js'
-        : 'static/js/bundle.js',
-      chunkFilename: isProd
-        ? 'static/js/[name].[contenthash:8].js'
-        : 'static/js/[name].chunk.js',
+      path: isDevMode ? undefined : paths.appDist,
+      pathinfo: isDevMode,
+      filename: isDevMode
+        ? 'static/js/bundle.js'
+        : 'static/js/[name].[contenthash:8].js',
+      chunkFilename: isDevMode
+        ? 'static/js/[name].chunk.js'
+        : 'static/js/[name].[contenthash:8].js',
       futureEmitAssets: true,
       publicPath: config.publicPath.endsWith('/') ? config.publicPath : `${config.publicPath}/`,
       globalObject: 'this',
     },
     stats: 'none',
     optimization: {
-      minimize: isProd,
+      minimize: !isDevMode,
       minimizer: [
         new TerserPlugin({
           terserOptions: {
@@ -233,7 +232,7 @@ module.exports = ({ mode, appEnv }) => {
               include: /node_modules\/antd/,
               use: [
                 {
-                  loader: isProd ? MiniCssExtractPlugin.loader : 'style-loader',
+                  loader: isDevMode ? require.resolve('style-loader') : MiniCssExtractPlugin.loader,
                 },
                 {
                   loader: require.resolve('css-loader'),
@@ -269,8 +268,8 @@ module.exports = ({ mode, appEnv }) => {
     plugins: [
       new HtmlWebpackPlugin({ inject: true, template: paths.appIndexHtml }),
       new webpack.DefinePlugin(stringifiedEnv),
-      !isProd && new webpack.HotModuleReplacementPlugin(),
-      isProd &&
+      isDevMode && new webpack.HotModuleReplacementPlugin(),
+      !isDevMode &&
         new MiniCssExtractPlugin({
           filename: 'static/css/[name].[contenthash:8].css',
           chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
