@@ -150,7 +150,7 @@ module.exports = ({ mode, appEnv }) => {
             resolvePluginsRelativeTo: __dirname,
             formatter: require.resolve('react-dev-utils/eslintFormatter'),
             baseConfig: {
-              extends: require.resolve('./eslint.config.js'),
+              extends: require.resolve('@react-go/eslint-config'),
               parser: require.resolve('babel-eslint'),
             },
             useEslintrc: false,
