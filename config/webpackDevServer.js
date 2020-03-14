@@ -19,6 +19,7 @@ module.exports = {
   clientLogLevel: 'none',
   quiet: true,
   transportMode: 'ws',
+  injectClient: false,
   overlay: false,
   watchOptions: {
     ignored: ignoredFiles(paths.appSrc),
