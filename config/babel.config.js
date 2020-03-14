@@ -16,7 +16,10 @@ module.exports = ({ antd }) => {
         require.resolve('babel-plugin-import'),
         { libraryName: isAntdMobile ? 'antd-mobile' : 'antd', libraryDirectory: 'es', style: true },
       ],
-      require.resolve('../utils/autoCSSModules'),
+      [
+        require.resolve('@react-go/babel-plugin-auto-css-modules'),
+        { flag: 'css_modules', extensions: ['.css', '.scss', '.sass'] },
+      ]
     ].filter(Boolean),
   };
 };
