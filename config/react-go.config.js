@@ -23,6 +23,7 @@ const DEFAULT_CONFIG = {
   publicPath: '/',
   antd: false, // boolean | object eg. { mobile: boolean, theme: {} }
   proxy: {},
+  px2rem: false,
 };
 
 module.exports = _.merge(DEFAULT_CONFIG, _.omit(USER_CONFIG, ['root', 'isTS']));

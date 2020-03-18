@@ -48,7 +48,8 @@ module.exports = ({ mode, appEnv }) => {
                 flexbox: 'no-2009',
               },
             }),
-          ],
+            config.px2rem && require('postcss-pxtorem')(config.px2rem)
+          ].filter(Boolean),
         },
       },
     ];
