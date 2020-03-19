@@ -48,7 +48,8 @@ module.exports = ({ mode, appEnv }) => {
                 flexbox: 'no-2009',
               },
             }),
-            config.px2rem && require('postcss-pxtorem')(config.px2rem)
+            config.px2rem && require('postcss-pxtorem')(config.px2rem),
+            config.px2vw && require('postcss-px-to-viewport')(config.px2vw),
           ].filter(Boolean),
         },
       },

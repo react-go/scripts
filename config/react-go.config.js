@@ -24,6 +24,7 @@ const DEFAULT_CONFIG = {
   antd: false, // boolean | object eg. { mobile: boolean, theme: {} }
   proxy: {},
   px2rem: false,
+  px2vw: false,
 };
 
 module.exports = _.merge(DEFAULT_CONFIG, _.omit(USER_CONFIG, ['root', 'isTS']));
