@@ -239,8 +239,19 @@ module.exports = ({ mode, appEnv }) => {
                 {
                   loader: require.resolve('css-loader'),
                   options: {
-                    importLoaders: 1,
+                    importLoaders: 2,
                     sourceMap: generateSourceMap,
+                  },
+                },
+                {
+                  loader: require.resolve('postcss-loader'),
+                  options: {
+                    sourceMap: generateSourceMap,
+                    ident: 'postcss',
+                    plugins: () => [
+                      config.px2rem && require('postcss-pxtorem')(config.px2rem),
+                      config.px2vw && require('postcss-px-to-viewport')(config.px2vw),
+                    ].filter(Boolean),
                   },
                 },
                 {
