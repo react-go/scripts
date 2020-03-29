@@ -25,6 +25,7 @@ const DEFAULT_CONFIG = {
   proxy: {},
   px2rem: false,
   px2vw: false,
+  webpack: null,
 };
 
 module.exports = _.merge(DEFAULT_CONFIG, _.omit(USER_CONFIG, ['root', 'isTS']));

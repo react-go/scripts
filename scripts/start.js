@@ -46,7 +46,13 @@ module.exports = (opts) => {
 
   let compiler;
   try {
-    compiler = webpack(webpackConfigFactory({ mode: 'development', appEnv: opts.appEnv }));
+    compiler = webpack(
+      webpackConfigFactory({
+        mode: 'development',
+        sourcemap: true,
+        appEnv: opts.appEnv,
+      })
+    );
   } catch (error) {
     console.log(error);
     process.exit(1);
