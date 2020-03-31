@@ -1,25 +1,26 @@
 /**
- * @param {Boolean|Object} [antd]
+ * get Babel config
+ * @param {array} [presets] extra Babel presets
+ * @param {array} [plugins] extra Babel plugins
+ * @returns Babel configuration object
  */
-module.exports = ({ antd }) => {
-  const useAntd = Boolean(antd);
-  const isAntdMobile = antd && antd.mobile;
+module.exports = ({
+  presets = [],
+  plugins = [],
+}) => {
   return {
     presets: [
       require.resolve('@babel/preset-env'),
       require.resolve('@babel/preset-react'),
+      ...presets,
     ],
     plugins: [
-      require.resolve('@babel/plugin-proposal-class-properties'),
-      [require.resolve('@babel/plugin-proposal-decorators'), { decoratorsBeforeExport: true }],
-      useAntd && [
-        require.resolve('babel-plugin-import'),
-        { libraryName: isAntdMobile ? 'antd-mobile' : 'antd', libraryDirectory: 'es', style: true },
-      ],
+      [require.resolve('@babel/plugin-proposal-class-properties'), { loose: true }],
       [
         require.resolve('@react-go/babel-plugin-auto-css-modules'),
         { flag: 'css_modules', extensions: ['.css', '.scss', '.sass'] },
-      ]
-    ].filter(Boolean),
+      ],
+      ...plugins,
+    ],
   };
 };

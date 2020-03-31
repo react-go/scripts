@@ -144,7 +144,7 @@ const getConfig = ({
         cacheCompression: false,
         configFile: false,
         babelrc: false,
-        ...babelConfigFactory({ antd: false }),
+        ...babelConfigFactory(ReactGoConfig.babel || {}),
         sourceMaps: sourcemap,
         inputSourceMap: sourcemap,
       });

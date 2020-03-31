@@ -21,11 +21,9 @@ const DEFAULT_CONFIG = {
   port: 8000,
   dist: './dist',
   publicPath: '/',
-  antd: false, // boolean | object eg. { mobile: boolean, theme: {} }
   proxy: {},
-  px2rem: false,
-  px2vw: false,
   webpack: null,
+  babel: {},
 };
 
 module.exports = _.merge(DEFAULT_CONFIG, _.omit(USER_CONFIG, ['root', 'isTS']));
