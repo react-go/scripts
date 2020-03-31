@@ -1,13 +1,13 @@
 module.exports = function applyStyleLoaders(
   rule,
   options,
-  extraLoader,
+  ...extraLoaders
 ) {
   const { isDevMode, sourcemap, modules } = options;
 
   let cssLoaderOptions = {
     sourceMap: sourcemap,
-    importLoaders: extraLoader ? 2 : 1,
+    importLoaders: extraLoaders ? extraLoaders.length + 1 : 1,
   };
   if (modules) {
     cssLoaderOptions = {
@@ -47,13 +47,15 @@ module.exports = function applyStyleLoaders(
       })
       .end();
 
-  if (extraLoader) {
-    const loaderName = extraLoader[0];
-    const loaderOptions = extraLoader[1] || {};
+  if (extraLoaders) {
+    extraLoaders.forEach(extraLoader => {
+      const loaderName = extraLoader[0];
+      const loaderOptions = extraLoader[1] || {};
 
-    rule.use(loaderName)
-      .loader(require.resolve(loaderName))
-      .options(loaderOptions)
-      .end();
+      rule.use(loaderName)
+        .loader(require.resolve(loaderName))
+        .options(loaderOptions)
+        .end();
+    });
   }
 };

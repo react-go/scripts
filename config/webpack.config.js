@@ -211,7 +211,7 @@ const getConfig = ({
 
   // custom webpack config
   if (ReactGoConfig.webpack) {
-    ReactGoConfig.webpack({ config, mode, sourcemap });
+    ReactGoConfig.webpack(config, { mode, sourcemap, applyStyleLoaders });
   }
 
   return config.toConfig();
