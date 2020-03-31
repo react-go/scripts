@@ -151,25 +151,25 @@ const getConfig = ({
   // css with css modules
   applyStyleLoaders(
     compileRule.oneOf('compile:css').test(cssRegex).resourceQuery(cssModulesQuery),
-    { isDevMode, sourcemap, modules: true },
+    { isDevMode, sourcemap, modules: true, usePostCSS: true },
   );
   // css without css modules
   applyStyleLoaders(
     compileRule.oneOf('compile:css:modules').test(cssRegex).set('sideEffects', true),
-    { isDevMode, sourcemap, modules: false },
+    { isDevMode, sourcemap, modules: false, usePostCSS: true },
   );
 
   const sassLoader = ['sass-loader', { implementation: require('sass') }];
   // sass with css modules
   applyStyleLoaders(
     compileRule.oneOf('compile:sass:modules').test(sassRegex).resourceQuery(cssModulesQuery),
-    { isDevMode, sourcemap, modules: true },
+    { isDevMode, sourcemap, modules: true, usePostCSS: true },
     sassLoader,
   );
   // sass without css modules
   applyStyleLoaders(
     compileRule.oneOf('compile:sass').test(sassRegex).set('sideEffects', true),
-    { isDevMode, sourcemap, modules: false },
+    { isDevMode, sourcemap, modules: false, usePostCSS: true },
     sassLoader,
   );
   // Make sure to add the new loaders before `compile:file`

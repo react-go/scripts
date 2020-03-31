@@ -3,11 +3,15 @@ module.exports = function applyStyleLoaders(
   options,
   ...extraLoaders
 ) {
-  const { isDevMode, sourcemap, modules } = options;
+  const { isDevMode, sourcemap, modules, usePostCSS } = options;
+
+  const importLoaders = extraLoaders
+    ? extraLoaders.length + (usePostCSS ? 1 : 0)
+    : usePostCSS ? 1 : 0;
 
   let cssLoaderOptions = {
     sourceMap: sourcemap,
-    importLoaders: extraLoaders ? extraLoaders.length + 1 : 1,
+    importLoaders,
   };
   if (modules) {
     cssLoaderOptions = {
@@ -29,8 +33,10 @@ module.exports = function applyStyleLoaders(
     .use('css-loader')
       .loader(require.resolve('css-loader'))
       .options(cssLoaderOptions)
-      .end()
-    .use('postcss-loader')
+      .end();
+
+  if (usePostCSS) {
+    rule.use('postcss-loader')
       .loader(require.resolve('postcss-loader'))
       .options({
         sourceMap: sourcemap,
@@ -46,6 +52,7 @@ module.exports = function applyStyleLoaders(
         ],
       })
       .end();
+  }
 
   if (extraLoaders) {
     extraLoaders.forEach(extraLoader => {
