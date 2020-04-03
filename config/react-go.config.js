@@ -1,29 +1,26 @@
 const fs = require('fs');
 const path = require('path');
 const _ = require('lodash');
+const loadConfig = require('./loadConfig');
 
 const appDirectory = fs.realpathSync(process.cwd());
 const userConfigPath = path.resolve(appDirectory, './react-go.config.js');
 
-let USER_CONFIG = {};
+let userConfig = {};
 
 if (fs.existsSync(userConfigPath)) {
-  USER_CONFIG = require(userConfigPath);
+  userConfig = require(userConfigPath);
 }
-
-if (!_.isPlainObject(USER_CONFIG)) {
+if (!_.isPlainObject(userConfig)) {
   throw new Error('react-go.config.js must export plain object');
 }
 
-const DEFAULT_CONFIG = {
-  root: appDirectory,
-  open: true, // string | boolean
+module.exports = {
+  open: true,
   port: 8000,
   dist: './dist',
   publicPath: '/',
   proxy: {},
-  webpack: null,
-  babel: {},
+  ...loadConfig(userConfig, appDirectory),
+  root: appDirectory,
 };
-
-module.exports = _.merge(DEFAULT_CONFIG, _.omit(USER_CONFIG, ['root', 'isTS']));

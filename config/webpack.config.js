@@ -144,7 +144,7 @@ const getConfig = ({
         cacheCompression: false,
         configFile: false,
         babelrc: false,
-        ...babelConfigFactory(ReactGoConfig.babel || {}),
+        ...babelConfigFactory(ReactGoConfig.babel),
         sourceMaps: sourcemap,
         inputSourceMap: sourcemap,
       });
@@ -210,9 +210,9 @@ const getConfig = ({
   }
 
   // custom webpack config
-  if (ReactGoConfig.webpack) {
-    ReactGoConfig.webpack(config, { mode, sourcemap, applyStyleLoaders });
-  }
+  ReactGoConfig.webpackChains.forEach((webpackChain) => {
+    webpackChain(config, { mode, sourcemap, applyStyleLoaders });
+  });
 
   return config.toConfig();
 };
