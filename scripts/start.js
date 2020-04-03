@@ -23,7 +23,7 @@ module.exports = (opts) => {
 
   const isOpen = Boolean(config.open);
   const openHost = !isOpen
-    ? false
+    ? 'localhost'
     : (config.open === true ? 'localhost' : config.open);
   const isLocal = ['localhost', '127.0.0.1', '0.0.0.0'].includes(openHost);
 
@@ -102,7 +102,7 @@ module.exports = (opts) => {
     if (isInteractive) {
       clearConsole();
       console.log(chalk.cyan('Starting the development server...\n'));
-      Boolean(openHost) && openBrowser(localUrl);
+      isOpen && openBrowser(localUrl);
     }
 
     ['SIGINT', 'SIGTERM'].forEach(function(sig) {
