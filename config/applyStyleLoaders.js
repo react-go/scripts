@@ -23,6 +23,8 @@ module.exports = function applyStyleLoaders(
     };
   }
 
+  rule.before('compile:file');
+
   rule
     .use('style-loader')
       .loader(isDevMode
