@@ -4,6 +4,7 @@ process.env.BABEL_ENV = 'production';
 const fs = require('fs-extra');
 const chalk = require('chalk');
 const webpack = require('webpack');
+const printBuildError = require('react-dev-utils/printBuildError');
 const webpackConfigFactory = require('../config/webpack.config');
 const paths = require('../config/paths');
 const fileSizeReporter = require('../utils/fileSizeReporter');
@@ -31,7 +32,11 @@ module.exports = (opts) => {
 
   compiler.run((error, stats) => {
     if (error) {
-      return console.log(error);
+      console.log('\n');
+      console.log(chalk.red('Failed to compile.'));
+      console.log();
+      printBuildError(error);
+      process.exit(1);
     }
     console.log(chalk.green('Compiled successfully.\n'));
     console.log('File sizes after gzip:\n');
