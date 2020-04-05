@@ -209,11 +209,13 @@ const getConfig = ({
       );
   }
 
+  // performance
+  config.performance.hints(false);
+
   // custom webpack config
   ReactGoConfig.webpackChains.forEach((webpackChain) => {
     webpackChain(config, { mode, sourcemap, applyStyleLoaders });
   });
-
   return config.toConfig();
 };
 
