@@ -15,10 +15,11 @@ const loadConfig = (config, appDirectory) => {
     }
   }
 
-  const { babel, webpack, presets, ...restConfig } = rawConfig;
+  const { babel, postcss, webpack, presets, ...restConfig } = rawConfig;
 
   let babelPresets = [];
   let babelPlugins = [];
+  let postcssPlugins = [];
   const webpackChains = [];
 
   if (babel && babel.presets) {
@@ -26,6 +27,9 @@ const loadConfig = (config, appDirectory) => {
   }
   if (babel && babel.plugins) {
     babelPlugins.push(...babel.plugins);
+  }
+  if (postcss && postcss.plugins) {
+    postcssPlugins.push(...postcss.plugins);
   }
   if (webpack) {
     webpackChains.push(webpack);
@@ -36,6 +40,7 @@ const loadConfig = (config, appDirectory) => {
       const presetConfig = loadConfig(preset, appDirectory);
       babelPresets = [...presetConfig.babel.presets, ...babelPresets];
       babelPlugins = [...presetConfig.babel.plugins, ...babelPlugins];
+      postcssPlugins = [...presetConfig.postcss.plugins, ...postcssPlugins];
       webpackChains.push(...presetConfig.webpackChains);
     })
   }
@@ -44,6 +49,9 @@ const loadConfig = (config, appDirectory) => {
     babel: {
       presets: babelPresets,
       plugins: babelPlugins,
+    },
+    postcss: {
+      plugins: postcssPlugins,
     },
     webpackChains: webpackChains.reverse(),
     ...restConfig,

@@ -1,3 +1,5 @@
+const ReactGoConfig = require('./react-go.config');
+
 module.exports = function applyStyleLoaders(
   rule,
   options,
@@ -51,6 +53,7 @@ module.exports = function applyStyleLoaders(
               flexbox: 'no-2009',
             },
           }),
+          ...ReactGoConfig.postcss.plugins,
         ],
       })
       .end();
