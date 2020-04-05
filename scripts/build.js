@@ -2,9 +2,12 @@ process.env.NODE_ENV = 'production';
 process.env.BABEL_ENV = 'production';
 
 const fs = require('fs-extra');
+const chalk = require('chalk');
 const webpack = require('webpack');
+const printBuildError = require('react-dev-utils/printBuildError');
 const webpackConfigFactory = require('../config/webpack.config');
 const paths = require('../config/paths');
+const fileSizeReporter = require('../utils/fileSizeReporter');
 
 module.exports = (opts) => {
   fs.emptyDirSync(paths.appDist);
@@ -15,7 +18,13 @@ module.exports = (opts) => {
 
   let compiler;
   try {
-    compiler = webpack(webpackConfigFactory({ mode: 'production', appEnv: opts.appEnv }));
+    compiler = webpack(
+      webpackConfigFactory({
+        mode: 'production',
+        sourcemap: false,
+        appEnv: opts.appEnv,
+      })
+    );
   } catch (error) {
     console.log(error);
     process.exit(1);
@@ -23,14 +32,17 @@ module.exports = (opts) => {
 
   compiler.run((error, stats) => {
     if (error) {
-      return console.log(error);
+      console.log('\n');
+      console.log(chalk.red('Failed to compile.'));
+      console.log();
+      printBuildError(error);
+      process.exit(1);
     }
-    console.log(stats.toString({
-      all: false,
-      errors: true,
-      warnings: true,
-      assets: true,
-      colors: true,
-    }));
+    console.log(chalk.green('Compiled successfully.\n'));
+    console.log('File sizes after gzip:\n');
+    fileSizeReporter(stats, paths.appDist);
+    console.log();
+    console.log(chalk.dim('Build with React Go ' + chalk.italic.underline('https://github.com/react-go')));
+    console.log();
   });
 };

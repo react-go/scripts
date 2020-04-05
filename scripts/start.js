@@ -23,7 +23,7 @@ module.exports = (opts) => {
 
   const isOpen = Boolean(config.open);
   const openHost = !isOpen
-    ? false
+    ? 'localhost'
     : (config.open === true ? 'localhost' : config.open);
   const isLocal = ['localhost', '127.0.0.1', '0.0.0.0'].includes(openHost);
 
@@ -46,7 +46,13 @@ module.exports = (opts) => {
 
   let compiler;
   try {
-    compiler = webpack(webpackConfigFactory({ mode: 'development', appEnv: opts.appEnv }));
+    compiler = webpack(
+      webpackConfigFactory({
+        mode: 'development',
+        sourcemap: true,
+        appEnv: opts.appEnv,
+      })
+    );
   } catch (error) {
     console.log(error);
     process.exit(1);
@@ -96,7 +102,7 @@ module.exports = (opts) => {
     if (isInteractive) {
       clearConsole();
       console.log(chalk.cyan('Starting the development server...\n'));
-      Boolean(openHost) && openBrowser(localUrl);
+      isOpen && openBrowser(localUrl);
     }
 
     ['SIGINT', 'SIGTERM'].forEach(function(sig) {
