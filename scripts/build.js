@@ -2,9 +2,11 @@ process.env.NODE_ENV = 'production';
 process.env.BABEL_ENV = 'production';
 
 const fs = require('fs-extra');
+const chalk = require('chalk');
 const webpack = require('webpack');
 const webpackConfigFactory = require('../config/webpack.config');
 const paths = require('../config/paths');
+const fileSizeReporter = require('../utils/fileSizeReporter');
 
 module.exports = (opts) => {
   fs.emptyDirSync(paths.appDist);
@@ -31,12 +33,11 @@ module.exports = (opts) => {
     if (error) {
       return console.log(error);
     }
-    console.log(stats.toString({
-      all: false,
-      errors: true,
-      warnings: true,
-      assets: true,
-      colors: true,
-    }));
+    console.log(chalk.green('Compiled successfully.\n'));
+    console.log('File sizes after gzip:\n');
+    fileSizeReporter(stats, paths.appDist);
+    console.log();
+    console.log(chalk.dim('Build with React Go ' + chalk.italic.underline('https://github.com/react-go')));
+    console.log();
   });
 };
