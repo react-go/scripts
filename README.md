@@ -2,4 +2,4 @@
 
 ## Usage
 
-Refer to [react-go/template-js](https://github.com/react-go/template-js)
+Refer to [react-go/template-default](https://github.com/react-go/template-default)
