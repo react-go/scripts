@@ -1,3 +1,4 @@
+const path = require('path');
 const Config = require('webpack-chain');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -51,7 +52,11 @@ const getConfig = ({
     .chunkFilename(isDevMode ? 'static/js/[name].chunk.js' : 'static/js/[name].[contenthash:8].js')
     .publicPath(ReactGoConfig.publicPath.endsWith('/') ? ReactGoConfig.publicPath : `${ReactGoConfig.publicPath}/`)
     .globalObject('this')
-    .futureEmitAssets(true);
+    .futureEmitAssets(true)
+    .devtoolModuleFilenameTemplate(isDevMode
+      ? info => path.resolve(info.absoluteResourcePath).replace(/\\/g, '/')
+      : info => path.relative(paths.appSrc, info.absoluteResourcePath).replace(/\\/g, '/')
+    );
 
   // resolve
   config.resolve.extensions.merge(['.js', '.jsx', '.ts', '.tsx', '.json', '.mjs']);
