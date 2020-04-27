@@ -23,6 +23,7 @@ module.exports = (opts) => {
         mode: 'production',
         sourcemap: false,
         appEnv: opts.appEnv,
+        analyze: opts.analyze,
       })
     );
   } catch (error) {

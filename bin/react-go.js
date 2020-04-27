@@ -19,7 +19,8 @@ program
   .action(() => require('../scripts/start')(program.opts()));
 program
   .command('build')
+  .option('--analyze', 'Visualize size of webpack output files')
   .description('build static files')
-  .action(() => require('../scripts/build')(program.opts()));
+  .action(({ analyze }) => require('../scripts/build')({ ...program.opts(), analyze }));
 
 program.parse(process.argv);

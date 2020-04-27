@@ -3,6 +3,7 @@ const Config = require('webpack-chain');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const BetterProgressWebpackPlugin = require('../utils/betterProgress');
 const paths = require('./paths');
@@ -20,11 +21,13 @@ const cssModulesQuery = /css_modules/;
  * @param {'none' | 'development' | 'production'} [mode = 'development'] webpack mode
  * @param {boolean} [sourcemap] should generate sourcemap
  * @param {string} [appEnv] custom environment variable
+ * @param {boolean} [analyze] analyze webpack output files
  */
 const getConfig = ({
   mode = 'development',
   sourcemap = false,
   appEnv,
+  analyze = false,
 }) => {
   const isDevMode = mode === 'development';
 
@@ -212,6 +215,11 @@ const getConfig = ({
           chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
         }]
       );
+  }
+
+  if (analyze) {
+    config.plugin('webpack-bundle-analyzer')
+      .use(BundleAnalyzerPlugin)
   }
 
   // performance
