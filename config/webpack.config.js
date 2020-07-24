@@ -126,8 +126,17 @@ const getConfig = ({
         resolvePluginsRelativeTo: __dirname,
         formatter: require.resolve('react-dev-utils/eslintFormatter'),
         baseConfig: {
-          extends: require.resolve('@react-go/eslint-config'),
+          extends: [
+            require.resolve('eslint-config-airbnb'),
+            require.resolve('eslint-config-airbnb/hooks'),
+          ],
           parser: require.resolve('babel-eslint'),
+          env: {
+            browser: true,
+            node: true,
+            commonjs: true,
+            es6: true,
+          },
         },
         useEslintrc: false,
       });
