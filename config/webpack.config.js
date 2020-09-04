@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 const BetterProgressWebpackPlugin = require('../utils/betterProgress');
 const paths = require('./paths');
@@ -151,7 +152,7 @@ const getConfig = ({
         cacheCompression: false,
         configFile: false,
         babelrc: false,
-        ...babelConfigFactory(ReactGoConfig.babel),
+        ...babelConfigFactory(ReactGoConfig.babel, isDevMode),
         sourceMaps: sourcemap,
         inputSourceMap: sourcemap,
       });
@@ -205,6 +206,8 @@ const getConfig = ({
   if (isDevMode) {
     config.plugin('webpack-hot-module-replacement-plugin')
       .use(webpack.HotModuleReplacementPlugin);
+    config.plugin('react-refresh-webpack-plugin')
+      .use(ReactRefreshWebpackPlugin);
   } else {
     config.plugin('mini-css-extract-plugin')
       .use(

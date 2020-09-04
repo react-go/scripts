@@ -4,10 +4,8 @@
  * @param {array} [plugins] extra Babel plugins
  * @returns Babel configuration object
  */
-module.exports = ({
-  presets = [],
-  plugins = [],
-}) => {
+module.exports = (babelConfig, isDevMode) => {
+  const { presets = [], plugins = [] } = babelConfig;
   return {
     presets: [
       require.resolve('@babel/preset-env'),
@@ -15,12 +13,13 @@ module.exports = ({
       ...presets,
     ],
     plugins: [
+      isDevMode && [require.resolve('react-refresh/babel')],
       [require.resolve('@babel/plugin-proposal-class-properties'), { loose: true }],
       [
         require.resolve('@react-go/babel-plugin-auto-css-modules'),
         { flag: 'css_modules', extensions: ['.css', '.scss', '.sass'] },
       ],
       ...plugins,
-    ],
+    ].filter(Boolean),
   };
 };

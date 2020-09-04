@@ -15,6 +15,7 @@ module.exports = {
   contentBasePublicPath: publicPath,
   watchContentBase: true,
   hot: true,
+  hotOnly: true,
   compress: true,
   clientLogLevel: 'none',
   quiet: true,
